@@ -2,17 +2,17 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Box, Activity, Layers, Menu, X, ExternalLink, Newspaper } from "lucide-react";
-"use client";
-import { motion } from "framer-motion";
+import { Activity, Menu, X, ExternalLink, Newspaper } from "lucide-react";
 
+// --- 1. COMPONENT DEFINITIONS ---
 interface HoloCardProps {
   title: string;
   value: string;
   trend: string;
 }
 
-function HoloCard({ title, value, trend }: HoloCardProps) {  return (
+function HoloCard({ title, value, trend }: HoloCardProps) {
+  return (
     <motion.div
       whileHover={{ scale: 1.02, rotateY: 5, rotateX: 5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -30,7 +30,8 @@ function HoloCard({ title, value, trend }: HoloCardProps) {  return (
     </motion.div>
   );
 }
-// --- 1. YOUR CONTENT DATABASE ---
+
+// --- 2. YOUR CONTENT DATABASE ---
 const INSIGHTS_DATA = [
   {
     category: "Institutional",
@@ -67,7 +68,7 @@ const INDEX_TRACKERS = [
   { title: "Prediction Mkts", value: "$940M", trend: "+24.8%" }
 ];
 
-// --- 2. PARTICLE FIELD COMPONENT ---
+// --- 3. PARTICLE FIELD COMPONENT ---
 const ParticleField = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -139,7 +140,7 @@ const ParticleField = () => {
   return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none opacity-40" />;
 };
 
-// --- 3. MAIN PAGE COMPONENT ---
+// --- 4. MAIN PAGE COMPONENT ---
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
