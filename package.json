@@ -1,4 +1,26 @@
-"devDependencies": {
+{
+  "name": "cryptoindex-live",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.474.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwind-merge": "^2.5.0"
+  },
+  "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -8,3 +30,4 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+}
