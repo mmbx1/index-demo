@@ -3,8 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Box, Activity, Layers, Menu, X, ExternalLink, Newspaper } from "lucide-react";
-import HoloCard from "../components/HoloCard";
-// --- 1. YOUR CONTENT DATABASE (Edit this to update the site!) ---
+import HoloCard from "@/components/HoloCard"; // <-- FIXED IMPORT PATH
+
+// --- 1. YOUR CONTENT DATABASE ---
 const INSIGHTS_DATA = [
   {
     category: "Institutional",
@@ -34,11 +35,13 @@ const INSIGHTS_DATA = [
     borderColor: "border-[#39FF14]/30"
   }
 ];
+
 const INDEX_TRACKERS = [
   { title: "RWA Sector", value: "$4.28B", trend: "+12.4%" },
   { title: "AI Compute", value: "$8.91B", trend: "+5.2%" },
   { title: "Prediction Mkts", value: "$940M", trend: "+24.8%" }
 ];
+
 // --- 2. PARTICLE FIELD COMPONENT ---
 const ParticleField = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -177,7 +180,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Shift / News Matrix Section */}
       {/* Live Market Indices Section */}
       <section className="relative py-12 px-6 lg:px-12 bg-[#0A1628] z-10">
         <div className="max-w-7xl mx-auto">
@@ -188,7 +190,6 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* We map through our INDEX_TRACKERS and snap a HoloCard Lego piece for each one */}
             {INDEX_TRACKERS.map((item, index) => (
               <HoloCard 
                 key={index} 
@@ -201,6 +202,8 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* Institutional Intel Section */}
       <section id="institutional" className="relative py-24 px-6 lg:px-12 bg-[#0A1628] border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           
