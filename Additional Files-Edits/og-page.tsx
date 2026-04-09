@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -48,8 +49,8 @@ const INSIGHTS_DATA = [
     source: "CoinDesk",
     date: "2 days ago",
     link: "#",
-    tagColor: "text-[#fb8252]",
-    borderColor: "border-[#fb8252]/30"
+    tagColor: "text-[#8c10ff]",
+    borderColor: "border-[#8c10ff]/30"
   },
   {
     category: "Prediction Markets",
@@ -79,7 +80,7 @@ const ParticleField = () => {
     if (!ctx) return;
 
     let particles: any[] = [];
-    const colors = ["#00FFFF", "#39FF14", "#fb8252"];
+    const colors = ["#00FFFF", "#39FF14", "#8c10ff"];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -191,11 +192,12 @@ export default function Home() {
             <span className="font-azeret text-xs font-bold tracking-[0.2em] text-[#00FFFF] uppercase">Navigating The Great Wealth Transfer</span>
           </motion.div>
 
-          {/* FIX: Solid White Heading */}
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="font-michroma text-5xl md:text-7xl leading-tight mb-8 uppercase text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-            The Monumental <br />
-            Shift is Here
+            className="font-michroma text-5xl md:text-7xl leading-tight mb-8 uppercase">
+            <span className="text-white">The Monumental</span><br />
+            <span className="bg-gradient-to-r from-[#00FFFF] via-[#39FF14] to-[#8c10ff] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,255,255,0.3)]">
+              Shift is Here
+            </span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
