@@ -23,8 +23,8 @@ export async function GET() {
       .sort((a: any, b: any) => b.apy - a.apy) 
       .slice(0, 15) 
       .map((pool: any) => ({
-        protocol: pool.project,
-        chain: pool.chain,
+        protocol: pool.project.toUpperCase(),
+        chain: pool.chain.toUpperCase(),
         tvl: pool.tvlUsd,
         apy: pool.apy,
         affiliate_link: `/out/stake?protocol=${pool.project}` 

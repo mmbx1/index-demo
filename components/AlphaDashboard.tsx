@@ -5,19 +5,17 @@ import useSWR from 'swr';
 import { Crosshair, ArrowUpRight, ArrowDownRight, ExternalLink, Skull } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-// Our custom Supabase fetcher for SWR
 const fetchAlphaCalls = async () => {
   const { data, error } = await supabase
     .from('alpha_calls')
     .select('*')
-    .order('created_at', { ascending: false }); // Newest calls first
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
   return data;
 };
 
 export default function AlphaDashboard() {
-  // Poll the Supabase database every 60 seconds
   const { data: alphaData, error, isLoading } = useSWR('alpha_calls', fetchAlphaCalls, {
     refreshInterval: 60000,
   });
@@ -26,12 +24,10 @@ export default function AlphaDashboard() {
   const rektCalls = alphaData?.filter((d: any) => d.status === 'LOSS') || [];
 
   const CallCard = ({ data, isWin }: { data: any, isWin: boolean }) => (
-    <div className={`relative flex items-center justify-between p-4 rounded-lg border bg-black transition-all hover:-translate-y-1 ${isWin ? 'border-gray-800 hover:border-green-500/50' : 'border-gray-800 hover:border-red-500/50'}`}>
-      
-      {/* Influencer & Token Info */}
+    <div className={`glass-card relative flex items-center justify-between p-4 transition-all hover:-translate-y-1 ${isWin ? 'hover:border-green-500/50' : 'hover:border-red-500/50'}`}>
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-bold tracking-widest uppercase text-gray-500 font-sans">{data.influencer}</span>
+          <span className="text-xs font-bold tracking-widest uppercase text-gray-500">{data.influencer}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-lg font-medium text-white font-mono">{data.token}</span>
@@ -39,7 +35,6 @@ export default function AlphaDashboard() {
         </div>
       </div>
 
-      {/* ROI & Action */}
       <div className="flex items-center gap-6">
         <div className="text-right">
           <span className={`block text-lg font-mono ${isWin ? 'text-green-500' : 'text-red-500'}`}>
@@ -48,16 +43,12 @@ export default function AlphaDashboard() {
           <span className="text-xs text-gray-600 font-mono">Now: ${Number(data.current_price).toFixed(2)}</span>
         </div>
         
-        <a
-          href={data.affiliate_link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`inline-flex items-center justify-center rounded border px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-200 ${
+        <a href={data.affiliate_link} target="_blank" rel="noopener noreferrer"
+          className={`inline-flex items-center justify-center rounded-lg border px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-200 ${
             isWin 
               ? 'border-green-500/50 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
               : 'border-red-500/50 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-black hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]'
-          }`}
-        >
+          }`}>
           {isWin ? 'Copy Trade' : 'Short Asset'} <ExternalLink className="ml-2 h-3 w-3" />
         </a>
       </div>
@@ -74,11 +65,10 @@ export default function AlphaDashboard() {
           </h2>
         </div>
 
-        {/* Live Database Indicator */}
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            {!isLoading && !error && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
-            <span className={`relative inline-flex rounded-full h-2 w-2 ${isLoading ? 'bg-gray-500' : error ? 'bg-red-500' : 'bg-green-500'}`}></span>
+            {!isLoading && !error && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />}
+            <span className={`relative inline-flex rounded-full h-2 w-2 ${isLoading ? 'bg-gray-500' : error ? 'bg-red-500' : 'bg-green-500'}`} />
           </span>
           <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
             {isLoading ? 'Querying...' : error ? 'DB Connection Failed' : 'Supabase Live'}
@@ -87,49 +77,38 @@ export default function AlphaDashboard() {
       </div>
 
       {isLoading ? (
-        // Loading Skeleton
-        <div className="w-full rounded-xl border border-gray-800 bg-gray-900/20 p-6 h-[300px] flex items-center justify-center animate-pulse">
-           <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Fetching on-chain verifiable calls...</span>
+        <div className="glass-card w-full p-6 h-[300px] flex items-center justify-center animate-pulse">
+          <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">Fetching on-chain verifiable calls...</span>
         </div>
       ) : error ? (
-        // Error State
         <div className="w-full rounded-xl border border-red-900/50 bg-red-500/5 p-6 text-center">
-          <span className="text-sm font-mono text-red-500">Failed to pull database records.</span>
+          <span className="text-sm font-mono text-red-500">Failed to pull database records. Check Supabase RLS policies.</span>
         </div>
       ) : (
-        // Split Dashboard Grid
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* The Winners */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
               <ArrowUpRight className="text-green-500 w-4 h-4" />
               <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest">Verified Alphas</h3>
             </div>
             {topCalls.length > 0 ? (
-              topCalls.map((call: any) => (
-                <CallCard key={call.id} data={call} isWin={true} />
-              ))
+              topCalls.map((call: any) => <CallCard key={call.id} data={call} isWin={true} />)
             ) : (
-              <p className="text-xs font-mono text-gray-600 py-4">No winning calls tracked.</p>
+              <p className="text-xs font-mono text-gray-600 py-4">No winning calls tracked yet.</p>
             )}
           </div>
 
-          {/* The Losers */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
               <Skull className="text-red-500 w-4 h-4" />
               <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest">Counter-Trade Opportunities</h3>
             </div>
             {rektCalls.length > 0 ? (
-              rektCalls.map((call: any) => (
-                <CallCard key={call.id} data={call} isWin={false} />
-              ))
+              rektCalls.map((call: any) => <CallCard key={call.id} data={call} isWin={false} />)
             ) : (
-              <p className="text-xs font-mono text-gray-600 py-4">No liquidated calls tracked.</p>
+              <p className="text-xs font-mono text-gray-600 py-4">No liquidated calls tracked yet.</p>
             )}
           </div>
-
         </div>
       )}
     </div>

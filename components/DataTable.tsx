@@ -18,19 +18,17 @@ export default function DataTable({ data, columns, ctaText }: DataTableProps) {
   if (!data || data.length === 0) return null;
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-800 bg-black shadow-2xl">
+    <div className="glass-card w-full overflow-x-auto">
       <table className="w-full text-left text-sm text-gray-300">
         <thead className="border-b border-gray-800 bg-gray-900/50 text-xs uppercase tracking-widest text-gray-500 font-sans">
           <tr>
             {columns.map((col, idx) => (
-              <th key={idx} className="px-6 py-4 font-semibold">
-                {col.header}
-              </th>
+              <th key={idx} className="px-6 py-4 font-semibold">{col.header}</th>
             ))}
             <th className="px-6 py-4 text-right font-semibold">Action</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-800 font-mono text-sm">
+        <tbody className="divide-y divide-gray-800/50 font-mono text-sm">
           {data.map((row, rowIndex) => (
             <tr key={rowIndex} className="transition-colors hover:bg-gray-900/50 group">
               {columns.map((col, colIndex) => {
@@ -42,7 +40,6 @@ export default function DataTable({ data, columns, ctaText }: DataTableProps) {
                   isPositive = value >= 0;
                   formattedValue = `${isPositive ? '+' : ''}${Number(value).toFixed(2)}%`;
                 } else if (col.isCurrency) {
-                  // Format large numbers (e.g., $1.2B, $400M)
                   formattedValue = new Intl.NumberFormat('en-US', { 
                     style: 'currency', 
                     currency: 'USD',
@@ -62,14 +59,9 @@ export default function DataTable({ data, columns, ctaText }: DataTableProps) {
                 );
               })}
               
-              {/* The Frictionless Conversion CTA */}
               <td className="whitespace-nowrap px-6 py-4 text-right font-sans">
-                <a
-                  href={row.affiliate_link || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded border border-green-500/50 bg-green-500/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-green-500 transition-all duration-200 hover:bg-green-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]"
-                >
+                <a href={row.affiliate_link || '#'} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-lg border border-green-500/50 bg-green-500/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-green-500 transition-all duration-200 hover:bg-green-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]">
                   {ctaText} <ExternalLink className="ml-2 h-3 w-3" />
                 </a>
               </td>
