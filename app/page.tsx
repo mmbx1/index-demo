@@ -208,9 +208,8 @@ export default function Home() {
         {!isBooting && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
             <ParticleField />
-            <motion.div style={{ y: y1 }} animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-green-500/20 rounded-full pointer-events-none"
-              style={{ boxShadow: '0 0 30px rgba(34,197,94,0.05)' }} />
+            <motion.div style={{ y: y1, boxShadow: '0 0 30px rgba(34,197,94,0.05)' }} animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-green-500/20 rounded-full pointer-events-none" />
             <motion.div style={{ y: y2 }} animate={{ rotate: -360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full pointer-events-none" />
           </motion.div>
