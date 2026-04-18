@@ -15,7 +15,11 @@ interface DataTableProps {
 }
 
 export default function DataTable({ data, columns, ctaText }: DataTableProps) {
-  if (!data || data.length === 0) return null;
+  if (!data || data.length === 0) return (
+    <div className="glass-card w-full p-6 h-[200px] flex items-center justify-center">
+      <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">No data available</span>
+    </div>
+  );
 
   return (
     <div className="glass-card w-full overflow-x-auto">
