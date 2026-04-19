@@ -292,12 +292,25 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="relative z-10 py-12 px-6 text-center border-t border-gray-900">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-2xl mx-auto">
           <div className="w-48 h-px mx-auto mb-6" style={{ background: 'linear-gradient(90deg, transparent, rgba(34,197,94,0.3), transparent)' }} />
-          <p className="text-xs leading-relaxed text-gray-600">
+          <p className="text-xs leading-relaxed text-gray-600 mb-6">
             CryptoIndex.live is currently in active development. Data shown may be simulated during the preview period. Not financial advice.
           </p>
-          <p className="text-[10px] mt-4 text-gray-700">
+          <div className="flex items-center justify-center gap-6 mb-4">
+            {[
+              { label: 'Privacy Policy', href: '/privacy' },
+              { label: 'Terms of Service', href: '/terms' },
+              { label: 'Disclaimer', href: '/disclaimer' },
+            ].map((link) => (
+              <a key={link.href} href={link.href}
+                className="text-[11px] uppercase tracking-widest text-gray-600 hover:text-green-500 transition-colors"
+                style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <p className="text-[10px] text-gray-700">
             © 2026 CryptoIndex.live — All rights reserved.
           </p>
         </div>
