@@ -5,6 +5,19 @@ import useSWR from 'swr';
 import { Crosshair, ArrowUpRight, ArrowDownRight, ExternalLink, Skull } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
+// TradingView links per token
+const TV_LINKS: Record<string, string> = {
+  TAO:  'https://www.tradingview.com/chart/?symbol=BINANCE%3ATAOUSDT',
+  LINK: 'https://www.tradingview.com/chart/?symbol=BINANCE%3ALINKUSDT',
+  HBAR: 'https://www.tradingview.com/chart/?symbol=BINANCE%3AHBARUSDT',
+  AVAX: 'https://www.tradingview.com/chart/?symbol=BINANCE%3AAVAXUSDT',
+  HYPE: 'https://www.tradingview.com/chart/?symbol=BYBIT%3AHYPEUSDT',
+  IOTA: 'https://www.tradingview.com/chart/?symbol=BINANCE%3AIOTAUSDT',
+  PEAQ: 'https://www.tradingview.com/chart/?symbol=BYBIT%3APEAQUSDT',
+  AERO: 'https://www.tradingview.com/chart/?symbol=BYBIT%3AAEROUSDT',
+  KTA:  'https://www.tradingview.com/chart/?symbol=BYBIT%3AKTAUSDT',
+};
+
 const fetchAlphaCalls = async () => {
   const { data, error } = await supabase
     .from('alpha_calls')
@@ -24,32 +37,32 @@ export default function AlphaDashboard() {
   const rektCalls = alphaData?.filter((d: any) => d.status === 'LOSS') || [];
 
   const CallCard = ({ data, isWin }: { data: any, isWin: boolean }) => (
-    <div className={`glass-card relative flex items-center justify-between p-4 transition-all hover:-translate-y-1 ${isWin ? 'hover:border-green-500/50' : 'hover:border-red-500/50'}`}>
+    <div className={`glass-card relative flex items-center justify-between p-3 transition-all hover:-translate-y-0.5 ${isWin ? 'hover:border-green-500/50' : 'hover:border-red-500/50'}`}>
       <div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-bold tracking-widest uppercase text-gray-500">{data.influencer}</span>
+        <div className="flex items-center gap-2 mb-0.5">
+          <span className="text-[10px] font-bold tracking-widest uppercase text-gray-500">{data.influencer}</span>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-lg font-medium text-white font-mono">{data.token}</span>
-          <span className="text-xs text-gray-600 font-mono">Entry: ${Number(data.call_price).toFixed(2)}</span>
+          <span className="text-sm font-medium text-white font-mono">{data.token}</span>
+          <span className="text-[10px] text-gray-600 font-mono">Entry: ${Number(data.call_price).toFixed(2)}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
         <div className="text-right">
-          <span className={`block text-lg font-mono ${isWin ? 'text-green-500' : 'text-red-500'}`}>
+          <span className={`block text-sm font-mono ${isWin ? 'text-green-500' : 'text-red-500'}`}>
             {isWin ? '+' : ''}{Number(data.roi).toFixed(2)}%
           </span>
-          <span className="text-xs text-gray-600 font-mono">Now: ${Number(data.current_price).toFixed(2)}</span>
+          <span className="text-[10px] text-gray-600 font-mono">Now: ${Number(data.current_price).toFixed(2)}</span>
         </div>
         
-        <a href={data.affiliate_link} target="_blank" rel="noopener noreferrer"
-          className={`inline-flex items-center justify-center rounded-lg border px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-200 ${
+        <a href={TV_LINKS[data.token] || data.affiliate_link} target="_blank" rel="noopener noreferrer"
+          className={`inline-flex items-center justify-center rounded-lg border px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${
             isWin 
               ? 'border-green-500/50 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
               : 'border-red-500/50 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-black hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]'
           }`}>
-          {isWin ? 'Copy Trade' : 'Short Asset'} <ExternalLink className="ml-2 h-3 w-3" />
+          Chart <ExternalLink className="ml-1.5 h-2.5 w-2.5" />
         </a>
       </div>
     </div>
@@ -86,7 +99,7 @@ export default function AlphaDashboard() {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
               <ArrowUpRight className="text-green-500 w-4 h-4" />
               <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest">Verified Alphas</h3>
@@ -98,7 +111,7 @@ export default function AlphaDashboard() {
             )}
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
               <Skull className="text-red-500 w-4 h-4" />
               <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest">Counter-Trade Opportunities</h3>

@@ -49,7 +49,7 @@ export default function SmartMoneyDashboard() {
           <span className="text-sm font-mono text-red-500">Failed to connect to flow radar.</span>
         </div>
       ) : (
-        <DataTable data={data?.data || []} columns={columns} ctaText="Trade Alongside" />
+        <DataTable data={data?.data || []} columns={columns} ctaText="Trade" />
       )}
     </div>
   );
