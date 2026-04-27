@@ -15,7 +15,7 @@ export default function SmartMoneyDashboard() {
   const columns: TableColumn[] = [
     { header: 'Token Asset', accessor: 'token' },
     { header: 'Top Accumulating Entity', accessor: 'accumulator' },
-    { header: '24h Net Flow', accessor: 'net_flow', isCurrency: true },
+    { header: '24h Net Flow', accessor: 'net_flow', isSignedCurrency: true },
     { header: '24h Total Volume', accessor: 'volume_24h', isCurrency: true },
   ];
 

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Menu, X, ExternalLink, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ExternalLink, Shield, ChevronDown } from "lucide-react";
 import YieldDashboard from "@/components/YieldDashboard";
 import SmartMoneyDashboard from "@/components/SmartMoneyDashboard";
 import AlphaDashboard from "@/components/AlphaDashboard";
@@ -100,9 +100,6 @@ export default function Home() {
   const [isBooting, setIsBooting] = useState(true);
   const [bootText, setBootText] = useState("INITIALIZING SECURE CONNECTION...");
 
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 150]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
 
   useEffect(() => {
     const t1 = setTimeout(() => setBootText("SYNCING ORACLE NODES..."), 600);
@@ -110,6 +107,10 @@ export default function Home() {
     const t3 = setTimeout(() => setIsBooting(false), 2000);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
+
+  const scrollToMarkets = () => {
+    document.getElementById('markets')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-black relative overflow-x-hidden" style={{ fontFamily: 'var(--font-sora, Sora, sans-serif)' }}>
@@ -146,12 +147,12 @@ export default function Home() {
       {/* NAVIGATION */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-gray-800 h-16 flex items-center justify-between px-6 lg:px-12">
         
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-500 rounded-sm" style={{ boxShadow: '0 0 8px #22c55e' }} />
+        <a href="/" className="flex items-center gap-3">
+          <img src="/logo.webp" alt="CryptoIndex" className="h-8 w-auto" />
           <span className="font-bold text-lg tracking-tight text-white">
             CryptoIndex<span className="text-gray-500">.Live</span>
           </span>
-        </div>
+        </a>
 
         <div className="hidden md:flex gap-8">
           {['Markets', 'Influencer Alpha', 'RWA Yields'].map((item) => (
@@ -164,11 +165,11 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Under Construction Badge */}
-        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/5 border border-green-500/30">
-          <span className="w-[5px] h-[5px] rounded-full bg-green-500" style={{ boxShadow: '0 0 6px #22c55e', animation: 'pulse-green 2s infinite' }} />
-          <span className="text-[10px] font-semibold tracking-[0.12em] uppercase text-green-500"
-            style={{ fontFamily: 'var(--font-jetbrains, monospace)' }}>
+        {/* Dev Badge — warm amber/gold */}
+        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border" style={{ backgroundColor: 'rgba(245, 200, 66, 0.05)', borderColor: 'rgba(245, 200, 66, 0.30)' }}>
+          <span className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: '#F5C842', boxShadow: '0 0 6px #F5C842', animation: 'pulse-green 2s infinite' }} />
+          <span className="text-[10px] font-semibold tracking-[0.12em] uppercase"
+            style={{ fontFamily: 'var(--font-jetbrains, monospace)', color: '#F5C842' }}>
             Platform in Development
           </span>
         </div>
@@ -194,8 +195,8 @@ export default function Home() {
               </a>
             ))}
             <div className="flex items-center gap-2 pt-2 border-t border-gray-800">
-              <span className="w-[5px] h-[5px] rounded-full bg-green-500" style={{ animation: 'pulse-green 2s infinite' }} />
-              <span className="text-[10px] tracking-[0.12em] uppercase text-green-500" style={{ fontFamily: 'var(--font-jetbrains, monospace)' }}>
+              <span className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: '#F5C842', animation: 'pulse-green 2s infinite' }} />
+              <span className="text-[10px] tracking-[0.12em] uppercase" style={{ fontFamily: 'var(--font-jetbrains, monospace)', color: '#F5C842' }}>
                 Platform in Development
               </span>
             </div>
@@ -203,25 +204,22 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* HERO */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-16 px-6 bg-black overflow-hidden">
+      {/* HERO — 85vh so content peeks above the fold */}
+      <section className="relative min-h-[85vh] flex flex-col items-center justify-center pt-16 px-6 bg-black overflow-hidden">
         {!isBooting && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
             <ParticleField />
-            <motion.div style={{ y: y1, boxShadow: '0 0 30px rgba(34,197,94,0.05)' }} animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-green-500/20 rounded-full pointer-events-none" />
-            <motion.div style={{ y: y2 }} animate={{ rotate: -360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full pointer-events-none" />
           </motion.div>
         )}
 
         <div className="relative z-10 max-w-4xl w-full flex flex-col items-center text-center mt-8">
-          {/* Under Construction Banner */}
+          {/* Early Access Badge — warm amber/gold */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/5 border border-green-500/20 mb-4 backdrop-blur-md">
-            <Shield className="w-3 h-3 text-green-500" />
-            <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-green-400"
-              style={{ fontFamily: 'var(--font-jetbrains, monospace)' }}>
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md mb-4 border"
+            style={{ backgroundColor: 'rgba(245, 200, 66, 0.05)', borderColor: 'rgba(245, 200, 66, 0.25)' }}>
+            <Shield className="w-3 h-3" style={{ color: '#F5C842' }} />
+            <span className="text-[11px] font-medium tracking-[0.1em] uppercase"
+              style={{ fontFamily: 'var(--font-jetbrains, monospace)', color: '#F5C842' }}>
               Early Access Preview — Full Platform Launching Soon
             </span>
           </motion.div>
@@ -267,6 +265,23 @@ export default function Home() {
             ))}
           </motion.div>
         </div>
+
+        {/* SCROLL ARROW */}
+        <motion.button
+          onClick={scrollToMarkets}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 8, 0] }}
+          transition={{ opacity: { delay: 1.2 }, y: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
+          className="absolute bottom-8 z-10 flex flex-col items-center gap-2 cursor-pointer group"
+          aria-label="Scroll to markets"
+        >
+          <span className="text-[9px] uppercase tracking-[0.25em] text-gray-600 group-hover:text-green-500 transition-colors"
+            style={{ fontFamily: 'var(--font-jetbrains, monospace)' }}>
+            Explore Data
+          </span>
+          <ChevronDown className="w-5 h-5 text-gray-600 group-hover:text-green-500 transition-colors" />
+          <div className="w-px h-6 bg-gradient-to-b from-gray-700 to-transparent group-hover:from-green-500 transition-colors" />
+        </motion.button>
       </section>
 
       {/* SMART MONEY SECTION */}

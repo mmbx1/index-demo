@@ -6,6 +6,7 @@ export type TableColumn = {
   accessor: string;
   isCurrency?: boolean;
   isPercentage?: boolean;
+  isSignedCurrency?: boolean;
 };
 
 interface DataTableProps {
@@ -39,10 +40,22 @@ export default function DataTable({ data, columns, ctaText }: DataTableProps) {
                 const value = row[col.accessor];
                 let formattedValue = value;
                 let isPositive = true;
+                let colorClass = 'text-gray-200 group-hover:text-white transition-colors';
 
                 if (col.isPercentage) {
                   isPositive = value >= 0;
                   formattedValue = `${isPositive ? '+' : ''}${Number(value).toFixed(2)}%`;
+                  colorClass = isPositive ? 'text-green-500' : 'text-red-500';
+                } else if (col.isSignedCurrency) {
+                  isPositive = value >= 0;
+                  const formatted = new Intl.NumberFormat('en-US', { 
+                    style: 'currency', 
+                    currency: 'USD',
+                    notation: 'compact',
+                    maximumFractionDigits: 2
+                  }).format(Math.abs(value));
+                  formattedValue = `${isPositive ? '+' : '-'}${formatted}`;
+                  colorClass = isPositive ? 'text-green-500' : 'text-red-500';
                 } else if (col.isCurrency) {
                   formattedValue = new Intl.NumberFormat('en-US', { 
                     style: 'currency', 
@@ -54,9 +67,9 @@ export default function DataTable({ data, columns, ctaText }: DataTableProps) {
 
                 return (
                   <td key={colIndex} className="whitespace-nowrap px-6 py-4">
-                    <span className={col.isPercentage ? (isPositive ? 'text-green-500' : 'text-red-500') : 'text-gray-200 group-hover:text-white transition-colors'}>
-                      {col.isPercentage && isPositive && <ArrowUpRight className="inline w-3 h-3 mr-1" />}
-                      {col.isPercentage && !isPositive && <ArrowDownRight className="inline w-3 h-3 mr-1" />}
+                    <span className={colorClass}>
+                      {(col.isPercentage || col.isSignedCurrency) && isPositive && <ArrowUpRight className="inline w-3 h-3 mr-1" />}
+                      {(col.isPercentage || col.isSignedCurrency) && !isPositive && <ArrowDownRight className="inline w-3 h-3 mr-1" />}
                       {formattedValue}
                     </span>
                   </td>
