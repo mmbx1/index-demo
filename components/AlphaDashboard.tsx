@@ -13,9 +13,9 @@ const TV_LINKS: Record<string, string> = {
   AVAX: 'https://www.tradingview.com/chart/?symbol=BINANCE%3AAVAXUSDT',
   HYPE: 'https://www.tradingview.com/chart/?symbol=BYBIT%3AHYPEUSDT',
   IOTA: 'https://www.tradingview.com/chart/?symbol=BINANCE%3AIOTAUSDT',
-  PEAQ: 'https://www.tradingview.com/chart/?symbol=BYBIT%3APEAQUSDT',
+  PEAQ: 'https://dexscreener.com/search?q=PEAQ',
   AERO: 'https://www.tradingview.com/chart/?symbol=BYBIT%3AAEROUSDT',
-  KTA:  'https://www.tradingview.com/chart/?symbol=BYBIT%3AKTAUSDT',
+  KTA:  'https://dexscreener.com/search?q=KTA',
 };
 
 const fetchAlphaCalls = async () => {
@@ -56,7 +56,7 @@ export default function AlphaDashboard() {
           <span className="text-[10px] text-gray-600 font-mono">Now: ${Number(data.current_price).toFixed(2)}</span>
         </div>
         
-        <a href={TV_LINKS[data.token] || data.affiliate_link} target="_blank" rel="noopener noreferrer"
+        <a href={TV_LINKS[data.token] || `https://dexscreener.com/search?q=${data.token}`} target="_blank" rel="noopener noreferrer"
           className={`inline-flex items-center justify-center rounded-lg border px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${
             isWin 
               ? 'border-green-500/50 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
